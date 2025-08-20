@@ -67,8 +67,8 @@ def submit_order():
                 "message": "Missing required fields: name, phone, or address"
             }), 400
         
-        # Format cart details
-        cart_details = "\n".join([f"- {item.get('title', 'Unknown')} (${item.get('price', 0)})" 
+        # Format cart details - FIXED: Using ₦ instead of $
+        cart_details = "\n".join([f"- {item.get('title', 'Unknown')} ({item.get('price', '₦0')})" 
                                  for item in cart_items])
         
         # Create the WhatsApp message

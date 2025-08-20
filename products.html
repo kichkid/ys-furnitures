@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YS Nation Furnitures Collections</title>
-  <link rel="stylesheet" href="index.html">
+  <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-
   <style>
     :root {
       --primary: #2c3e50;
@@ -95,6 +93,67 @@
     .footer-divider {
       border-color: rgba(255,255,255,0.1);
       margin: 30px 0;
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background: #25D366;
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 80%;
+    }
+    
+    .notification.error {
+      background: #ff4d4d;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+    
+    .loader {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mobile specific styles */
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      
+      .category-buttons {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 10px;
+      }
+      
+      .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+      }
     }
   </style>
 </head>
@@ -188,6 +247,17 @@
             <textarea id="address" class="form-control mb-2" placeholder="Address" required></textarea>
             <button type="submit" class="btn btn-success w-100"><i class="fa-brands fa-whatsapp"></i> Submit Order via WhatsApp</button>
           </form>
+
+          <!-- Manual WhatsApp option for mobile -->
+          <div class="mt-4 p-3 border rounded">
+            <h6><i class="fas fa-mobile-alt me-2"></i> Mobile Troubleshooting</h6>
+            <p class="small mb-2">If the automatic redirect doesn't work:</p>
+            <div class="d-flex align-items-center">
+              <input type="text" id="manualWhatsappNumber" class="form-control form-control-sm me-2" value="2347026972403" readonly>
+              <button id="copyButton" class="btn btn-sm btn-outline-primary"><i class="far fa-copy"></i> Copy</button>
+            </div>
+            <p class="small mt-2">Copy this number and manually message us on WhatsApp with your order details.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -243,6 +313,12 @@
     </div>
   </footer>
 
+  <!-- Notification Element -->
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notificationText">Order submitted successfully! Redirecting to WhatsApp...</span>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let cart = [];
@@ -270,6 +346,26 @@
       {category:"tv", title:"Premium TV Stand", price:"₦900,000", discount:"₦810,000", img:"https://via.placeholder.com/300x180?text=Premium+TV"}
     ];
 
+    // DOM elements
+    const notification = document.getElementById('notification');
+    const notificationText = document.getElementById('notificationText');
+
+    // Show notification function
+    function showNotification(message, isError = false) {
+      notificationText.textContent = message;
+      notification.classList.remove('error');
+      
+      if (isError) {
+        notification.classList.add('error');
+      }
+      
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 5000);
+    }
+
     window.onload = () => {
       const productContainer = document.getElementById("products");
       products.forEach(p => {
@@ -280,7 +376,7 @@
               <h5 class="card-title mt-2">${p.title}</h5>
               <p class="price">${p.price}</p>
               <p class="discount">10% OFF → ${p.discount}</p>
-              <button class="btn cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class=" cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
             </div>
           </div>`;
       });
@@ -294,9 +390,16 @@
         const discountPrice = card.querySelector(".discount").innerText.split("→ ")[1];
         const price = parseFloat(discountPrice.replace(/[^\d.]/g, ''));
 
-        cart.push({ title, price: discountPrice, quantity: 1 });
-        document.getElementById("cartCount").innerText = cart.length;
-        alert("You have added one to cart");
+        // Check if item already exists in cart
+        const existingItem = cart.find(item => item.title === title);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ title, price: discountPrice, quantity: 1 });
+        }
+        
+        document.getElementById("cartCount").innerText = cart.reduce((total, item) => total + item.quantity, 0);
+        showNotification(`${title} added to cart!`);
       }
     });
 
@@ -339,10 +442,24 @@
     // Fetch WhatsApp number from backend
     async function fetchWhatsAppNumber() {
       try {
-        const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
+        // For mobile compatibility, try multiple endpoints
+        const endpoints = [
+          "http://127.0.0.1:5000/get_whatsapp",
+          "http://localhost:5000/get_whatsapp"
+        ];
         
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        let response = null;
+        for (const endpoint of endpoints) {
+          try {
+            response = await fetch(endpoint);
+            if (response.ok) break;
+          } catch (e) {
+            console.log(`Failed to fetch from ${endpoint}`, e);
+          }
+        }
+        
+        if (!response || !response.ok) {
+          throw new Error(`Server returned ${response?.status}: ${response?.statusText}`);
         }
         
         const data = await response.json();
@@ -365,12 +482,12 @@
 
       // Validate form
       if (!name || !phone || !address) {
-        alert("Please fill in all fields before submitting your order.");
+        showNotification("Please fill in all fields before submitting your order.", true);
         return;
       }
 
       if (cart.length === 0) {
-        alert("Your cart is empty. Please add items to your cart before submitting.");
+        showNotification("Your cart is empty. Please add items to your cart before submitting.", true);
         return;
       }
 
@@ -393,19 +510,49 @@
         let message = `Hello, my name is ${name}.%0AMy phone is ${phone}.%0AMy address is: ${address}.%0A%0AI want to order:%0A${cartDetails}%0A%0ATotal: ₦${total.toLocaleString()}`;
 
         // Show success notification
-        alert("Order submitted successfully! Redirecting to WhatsApp...");
+        showNotification("Order submitted successfully! Redirecting to WhatsApp...");
         
-        // Redirect to WhatsApp
-        window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+        // Mobile devices sometimes have issues with window.open, so we try multiple approaches
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+          // For mobile devices, use a direct link that might work better
+          setTimeout(() => {
+            window.location.href = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
+          }, 1000);
+        } else {
+          // For desktop, use standard approach
+          setTimeout(() => {
+            window.open(`https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`, "_blank");
+          }, 1000);
+        }
         
       } catch (error) {
         console.error("Error submitting order:", error);
-        alert(`Error: ${error.message}. Please try again.`);
+        showNotification(`Error: ${error.message}. Please try the manual option.`, true);
       }
     }
 
     // Add event listener to form
     document.getElementById("orderForm").addEventListener("submit", submitOrder);
+
+    // Copy button functionality
+    document.getElementById("copyButton").addEventListener("click", () => {
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = document.getElementById("manualWhatsappNumber").value;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempTextArea);
+      
+      showNotification("WhatsApp number copied to clipboard!");
+    });
+
+    // Initialize WhatsApp number
+    document.addEventListener('DOMContentLoaded', async () => {
+      const number = await fetchWhatsAppNumber();
+      document.getElementById("manualWhatsappNumber").value = number;
+    });
   </script>
 </body>
 </html>
