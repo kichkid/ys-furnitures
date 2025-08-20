@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -182,6 +180,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            max-width: 80%;
         }
         
         .notification.error {
@@ -206,9 +205,38 @@
             to { transform: rotate(360deg); }
         }
         
+        .troubleshooting {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #25D366;
+        }
+        
+        .troubleshooting h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .troubleshooting ul {
+            padding-left: 20px;
+        }
+        
+        .troubleshooting li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
         @media (max-width: 768px) {
             .content {
                 flex-direction: column;
+            }
+            
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
             }
         }
     </style>
@@ -229,6 +257,16 @@
                 <div class="cart-total">
                     Total: $<span id="cartTotal">0.00</span>
                 </div>
+                
+                <div class="troubleshooting">
+                    <h3><i class="fas fa-tools"></i> Mobile Troubleshooting</h3>
+                    <ul>
+                        <li>Ensure WhatsApp is installed on your phone</li>
+                        <li>Make sure you're using a mobile browser (Chrome, Safari)</li>
+                        <li>Check that pop-ups are not blocked for this site</li>
+                        <li>Try clicking "Open" if WhatsApp doesn't launch automatically</li>
+                    </ul>
+                </div>
             </div>
             
             <div class="form-section">
@@ -241,7 +279,7 @@
                     
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                        <input type="tel" id="phone" placeholder="Enter your phone number with country code" required>
                     </div>
                     
                     <div class="form-group">
@@ -253,6 +291,17 @@
                         <i class="fab fa-whatsapp whatsapp-icon"></i> Complete Order via WhatsApp
                     </button>
                 </form>
+                
+                <div class="manual-option" style="margin-top: 20px; padding: 15px; background: #f0f8ff; border-radius: 8px;">
+                    <h3 style="color: #333; margin-bottom: 10px;">Alternative Option</h3>
+                    <p style="margin-bottom: 15px; line-height: 1.5;">If the automatic redirect doesn't work, you can manually send your order to:</p>
+                    <div style="text-align: center;">
+                        <div id="manualWhatsappNumber" style="font-weight: bold; font-size: 18px; color: #25D366; margin: 10px 0;">Loading...</div>
+                        <button id="copyButton" style="background: #3b5998; padding: 10px 15px; font-size: 14px;">
+                            <i class="far fa-copy"></i> Copy Number
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -275,6 +324,8 @@
         const submitBtn = document.getElementById('submitBtn');
         const notification = document.getElementById('notification');
         const notificationText = document.getElementById('notificationText');
+        const manualWhatsappNumber = document.getElementById('manualWhatsappNumber');
+        const copyButton = document.getElementById('copyButton');
 
         // Display cart items and calculate total
         function renderCart() {
@@ -328,6 +379,26 @@
             }
         }
 
+        // Fetch WhatsApp number from backend
+        async function fetchWhatsAppNumber() {
+            try {
+                // Use your computer's IP address if accessing from mobile
+                // Replace 127.0.0.1 with your computer's IP if needed
+                const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                return data.whatsapp;
+            } catch (error) {
+                console.error("Error fetching WhatsApp number:", error);
+                // Fallback number
+                return "2347026972403";
+            }
+        }
+
         // Submit order via WhatsApp
         async function submitOrder(event) {
             event.preventDefault();
@@ -346,15 +417,7 @@
             }
 
             try {
-                // Fetch WhatsApp number from backend
-                const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
-                
-                if (!response.ok) {
-                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                const whatsappNumber = data.whatsapp;
+                const whatsappNumber = await fetchWhatsAppNumber();
 
                 // Build cart details
                 let cartDetails = cart.map(item => 
@@ -367,24 +430,59 @@
                 // Show success notification
                 showNotification("Order submitted successfully! Redirecting to WhatsApp...");
                 
-                // Wait a moment before redirecting to show the notification
-                setTimeout(() => {
-                    // Redirect to WhatsApp with the number from backend
-                    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
-                    setButtonState(false);
-                }, 1500);
+                // Mobile devices sometimes have issues with window.open, so we try multiple approaches
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                
+                if (isMobile) {
+                    // For mobile devices, use a direct link that might work better
+                    setTimeout(() => {
+                        window.location.href = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
+                    }, 1000);
+                } else {
+                    // For desktop, use standard approach
+                    setTimeout(() => {
+                        window.open(`https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`, "_blank");
+                    }, 1000);
+                }
+                
+                setButtonState(false);
                 
             } catch (error) {
                 console.error("Error submitting order:", error);
-                showNotification(`Error: ${error.message}. Please check if the backend server is running.`, true);
+                showNotification(`Error: ${error.message}. Using fallback method.`, true);
                 setButtonState(false);
             }
         }
 
         // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             renderCart();
             orderForm.addEventListener('submit', submitOrder);
+            
+            // Fetch and display the WhatsApp number for manual option
+            try {
+                const number = await fetchWhatsAppNumber();
+                manualWhatsappNumber.textContent = number;
+            } catch (error) {
+                manualWhatsappNumber.textContent = "2347026972403"; // Fallback number
+            }
+            
+            // Copy button functionality
+            copyButton.addEventListener('click', () => {
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = manualWhatsappNumber.textContent;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                
+                const originalText = copyButton.innerHTML;
+                copyButton.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyButton.innerHTML = originalText;
+                }, 2000);
+            });
         });
     </script>
 </body>

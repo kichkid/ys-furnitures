@@ -10,8 +10,7 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-
-:root {
+    :root {
       --primary: #2c3e50;
       --secondary: #e67e22;
       --accent: #f1c40f;
@@ -33,103 +32,95 @@
     .cart-btn span { position: absolute; top: -10px; right: -10px; background: red; color: #fff; font-size: 12px; border-radius: 50%; padding: 3px 7px; }
     .product img { height: 180px; object-fit: cover; border-radius: 10px; }
 
-    
     /* Footer */
-footer { 
-    background: #2c3e50; 
-    color: #fff; 
-    padding: 50px 0 20px; 
-    margin-top: 60px; 
-  }
-  
-  .footer-title {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-    position: relative;
-    padding-bottom: 10px;
-  }
-  
-  .footer-title:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--secondary);
-  }
-  
-  .footer a {
-    color: #ddd;
-    text-decoration: none;
-    transition: color 0.3s;
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  .footer a:hover {
-    color: var(--accent);
-  }
-  
-  .social-icons {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .social-icons a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    margin: 0 5px;
-    transition: all 0.3s;
-  }
-  
-  .social-icons a:hover {
-    background: var(--secondary);
-    transform: translateY(-3px);
-  }
-  
-  .footer-divider {
-    border-color: rgba(255,255,255,0.1);
-    margin: 30px 0;
-  }
-  
+    footer { 
+      background: #2c3e50; 
+      color: #fff; 
+      padding: 50px 0 20px; 
+      margin-top: 60px; 
+    }
+    
+    .footer-title {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-title:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--secondary);
+    }
+    
+    .footer a {
+      color: #ddd;
+      text-decoration: none;
+      transition: color 0.3s;
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    .footer a:hover {
+      color: var(--accent);
+    }
+    
+    .social-icons {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .social-icons a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      margin: 0 5px;
+      transition: all 0.3s;
+    }
+    
+    .social-icons a:hover {
+      background: var(--secondary);
+      transform: translateY(-3px);
+    }
+    
+    .footer-divider {
+      border-color: rgba(255,255,255,0.1);
+      margin: 30px 0;
+    }
   </style>
 </head>
 <body>
+  <header class="sliding-header">
+    <div class="header-content">
+      <div class="logo">YS Nations Furniture</div>
+      <div class="logo">Got-You</div>
+      <div class="logo">Covered</div>
+      <div class="logo">Nation Wide</div>
+    </div>
+  </header>
 
-
-    <header class="sliding-header">
-        <div class="header-content">
-            <div class="logo">YS Nations Furniture</div>
-            <div class="logo">Got-You</div>
-            <div class="logo">Covered</div>
-            <div class="logo">Nation  Wide</div>
-        </div>
-    </header>
-    
-
-    <!-- ✅ Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-smpy-3 position-sticky top-0">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-smpy-3 position-sticky top-0">
     <div class="container">
-      <!-- Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">
         <img src="images/logo.png" alt="YS Furniture Logo" width="40" height="40" class="me-2">
         <span class="fw-bold">YS Furniture</span>
       </a>
-  
-      <!-- Toggler (for mobile) -->
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-  
-      <!-- Navbar Links -->
+
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -145,9 +136,6 @@ footer {
       </div>
     </div>
   </nav>
-
- 
-
 
   <div class="container py-4 mt-5 pt-5">
     <div class="heading">
@@ -189,9 +177,12 @@ footer {
         </div>
         <div class="modal-body">
           <ul id="cartItems" class="list-group mb-3"></ul>
+          <div class="d-flex justify-content-between mb-3">
+            <h5>Total: <span id="cartTotal">₦0</span></h5>
+          </div>
 
           <h5><i class="fa-solid fa-user"></i> Customer Info</h5>
-          <form id="orderForm" onsubmit="submitOrder(event)">
+          <form id="orderForm">
             <input type="text" id="fullName" class="form-control mb-2" placeholder="Full Name" required>
             <input type="text" id="phone" class="form-control mb-2" placeholder="Phone Number" required>
             <textarea id="address" class="form-control mb-2" placeholder="Address" required></textarea>
@@ -202,12 +193,9 @@ footer {
     </div>
   </div>
 
-
   <footer class="footer">
     <div class="container py-5">
       <div class="row">
-        
-        <!-- Contact Us -->
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="footer-title"><i class="fas fa-phone-alt me-2"></i> Contact Us</h5>
           <p><i class="fas fa-phone me-2"></i> +234 701 234 5678</p>
@@ -216,14 +204,12 @@ footer {
           </p>
         </div>
   
-        <!-- Address -->
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="footer-title"><i class="fas fa-map-marker-alt me-2"></i> Address</h5>
           <p>123 YS Furniture Plaza,</p>
           <p>Asaba, Delta State, Nigeria</p>
         </div>
   
-        <!-- Quick Links -->
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="footer-title"><i class="fas fa-link me-2"></i> Quick Links</h5>
           <ul class="list-unstyled">
@@ -234,7 +220,6 @@ footer {
           </ul>
         </div>
   
-        <!-- Support & Connect -->
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="footer-title"><i class="fas fa-headset me-2"></i> Support</h5>
           <p><i class="fas fa-envelope me-2"></i> info@ysfurniture.com</p>
@@ -252,15 +237,12 @@ footer {
   
       <hr class="footer-divider">
   
-      <!-- Copyright -->
       <div class="text-center mt-3">
         <p>&copy; 2025 <strong>YS Furniture</strong>. All rights reserved.</p>
       </div>
     </div>
   </footer>
-  
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let cart = [];
@@ -310,8 +292,9 @@ footer {
         const card = e.target.closest(".card");
         const title = card.querySelector(".card-title").innerText;
         const discountPrice = card.querySelector(".discount").innerText.split("→ ")[1];
+        const price = parseFloat(discountPrice.replace(/[^\d.]/g, ''));
 
-        cart.push({ title, price: discountPrice });
+        cart.push({ title, price: discountPrice, quantity: 1 });
         document.getElementById("cartCount").innerText = cart.length;
         alert("You have added one to cart");
       }
@@ -321,12 +304,26 @@ footer {
     document.getElementById("cartModal").addEventListener("show.bs.modal", () => {
       const cartItems = document.getElementById("cartItems");
       cartItems.innerHTML = "";
+      
+      let total = 0;
       cart.forEach(item => {
         const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between";
-        li.innerHTML = `<span>${item.title}</span><span>${item.price}</span>`;
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+        li.innerHTML = `
+          <span>${item.title}</span>
+          <div>
+            <span class="badge bg-secondary me-2">${item.quantity}</span>
+            <span>${item.price}</span>
+          </div>`;
         cartItems.appendChild(li);
+        
+        // Calculate total
+        const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+        total += price * item.quantity;
       });
+      
+      // Format total as Nigerian Naira
+      document.getElementById("cartTotal").textContent = `₦${total.toLocaleString()}`;
     });
 
     // Category filter
@@ -339,50 +336,76 @@ footer {
       }
     });
 
+    // Fetch WhatsApp number from backend
+    async function fetchWhatsAppNumber() {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
+        
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        return data.whatsapp;
+      } catch (error) {
+        console.error("Error fetching WhatsApp number:", error);
+        // Fallback number
+        return "2347026972403";
+      }
+    }
+
     // Submit order via WhatsApp
     async function submitOrder(event) {
       event.preventDefault();
-
-      const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
-      const data = await response.json();
-      const whatsappNumber = data.whatsapp;
-
+      
       // Collect customer details
       let name = document.getElementById("fullName").value;
       let phone = document.getElementById("phone").value;
       let address = document.getElementById("address").value;
 
-      // Build cart details
-      let cartDetails = cart.map(item => `- ${item.title} (${item.price})`).join("%0A");
+      // Validate form
+      if (!name || !phone || !address) {
+        alert("Please fill in all fields before submitting your order.");
+        return;
+      }
 
-      // Example message
-      let message = `Hello, my name is ${name}.%0AMy phone is ${phone}.%0AMy address is: ${address}.%0A%0AI want to order:%0A${cartDetails}`;
+      if (cart.length === 0) {
+        alert("Your cart is empty. Please add items to your cart before submitting.");
+        return;
+      }
 
-      // Redirect to WhatsApp with the hidden number
-      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+      try {
+        const whatsappNumber = await fetchWhatsAppNumber();
+
+        // Build cart details
+        let cartDetails = cart.map(item => 
+          `- ${item.quantity} x ${item.title} (${item.price})`
+        ).join("%0A");
+
+        // Calculate total
+        let total = 0;
+        cart.forEach(item => {
+          const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+          total += price * item.quantity;
+        });
+
+        // Create message
+        let message = `Hello, my name is ${name}.%0AMy phone is ${phone}.%0AMy address is: ${address}.%0A%0AI want to order:%0A${cartDetails}%0A%0ATotal: ₦${total.toLocaleString()}`;
+
+        // Show success notification
+        alert("Order submitted successfully! Redirecting to WhatsApp...");
+        
+        // Redirect to WhatsApp
+        window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+        
+      } catch (error) {
+        console.error("Error submitting order:", error);
+        alert(`Error: ${error.message}. Please try again.`);
+      }
     }
 
-    // Mobile devices sometimes have issues with window.open, so we try multiple approaches
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-                
-                if (isMobile) {
-                    // For mobile devices, use a direct link that might work better
-                    setTimeout(() => {
-                        window.location.href = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
-                    }, 1000);
-                } else {
-                    // For desktop, use standard approach
-                    setTimeout(() => {
-                        window.open(`https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`, "_blank");
-                    }, 1000);
-                }
-                
-                setButtonState(false);
-                
-            
-        
-          
+    // Add event listener to form
+    document.getElementById("orderForm").addEventListener("submit", submitOrder);
   </script>
 </body>
 </html>
-
