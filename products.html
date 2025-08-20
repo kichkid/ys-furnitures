@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YS Nation Furnitures Collections</title>
+  <link rel="stylesheet" href="index.html">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+:root {
+      --primary: #2c3e50;
+      --secondary: #e67e22;
+      --accent: #f1c40f;
+      --light: #ecf0f1;
+      --dark: #34495e;
+    }
+    
+    body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+    .card { border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; }
+    .card:hover { transform: translateY(-5px); }
+    .category-buttons button { margin: 5px; }
+    #cartModal .modal-body { max-height: 400px; overflow-y: auto; }
+    .price { font-weight: bold; color: #198754; }
+    .discount { color: #dc3545; font-size: 0.9rem; }
+    .heading { text-align: center; margin-bottom: 15px; }
+    .heading h1 { font-weight: bold; }
+    .heading h5 { color: #6c757d; }
+    .cart-btn { position: relative; }
+    .cart-btn span { position: absolute; top: -10px; right: -10px; background: red; color: #fff; font-size: 12px; border-radius: 50%; padding: 3px 7px; }
+    .product img { height: 180px; object-fit: cover; border-radius: 10px; }
+
+    
+    /* Footer */
+footer { 
+    background: #2c3e50; 
+    color: #fff; 
+    padding: 50px 0 20px; 
+    margin-top: 60px; 
+  }
+  
+  .footer-title {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .footer-title:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--secondary);
+  }
+  
+  .footer a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .footer a:hover {
+    color: var(--accent);
+  }
+  
+  .social-icons {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .social-icons a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: all 0.3s;
+  }
+  
+  .social-icons a:hover {
+    background: var(--secondary);
+    transform: translateY(-3px);
+  }
+  
+  .footer-divider {
+    border-color: rgba(255,255,255,0.1);
+    margin: 30px 0;
+  }
+  
+  </style>
+</head>
+<body>
+
+    <header class="sliding-header">
+        <div class="header-content">
+            <div class="logo">YS Nations Furniture</div>
+            <div class="logo">Got-You</div>
+            <div class="logo">Covered</div>
+            <div class="logo">Nation  Wide</div>
+        </div>
+    </header>
+
+
+    <!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mt-5 py-3">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="images/logo.png" alt="YS Furniture Logo" width="40" height="40" class="me-2">
+        <span class="fw-bold">YS Furniture</span>
+      </a>
+  
+      <!-- Toggler (for mobile) -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Navbar Links -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="index.html"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="products.html"><i class="fas fa-th"></i> View Our Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container py-4 mt-5 pt-5">
+    <div class="heading">
+      <h1><i class="fa-solid fa-couch"></i> YS Nation Furnitures Collections</h1>
+      <h5>✨ Enjoy Our Discount Prices ✨</h5>
+    </div>
+
+    <!-- Category Buttons -->
+    <div class="text-center category-buttons mb-4">
+      <button class="btn btn-outline-dark filter-btn" data-category="all"><i class="fa-solid fa-border-all"></i> All</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="wine"><i class="fa-solid fa-wine-bottle"></i> Wine Shelves</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="dining"><i class="fa-solid fa-utensils"></i> Dining Sets</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="chairs"><i class="fa-solid fa-chair"></i> Luxury Chairs</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="kitchen"><i class="fa-solid fa-kitchen-set"></i> Kitchen Cabinets</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="doors"><i class="fa-solid fa-door-closed"></i> Doors</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="bed"><i class="fa-solid fa-bed"></i> Beds</button>
+      <button class="btn btn-outline-dark filter-btn" data-category="tv"><i class="fa-solid fa-tv"></i> TV Consoles</button>
+    </div>
+
+    <!-- Cart Button -->
+    <div class="text-end mb-3">
+      <button class="btn btn-primary cart-btn" data-bs-toggle="modal" data-bs-target="#cartModal">
+        <i class="fa-solid fa-cart-shopping "></i> View Cart 
+        <span id="cartCount">0</span>
+      </button>
+    </div>
+
+    <!-- Products -->
+    <div class="row" id="products"></div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> Your Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <ul id="cartItems" class="list-group mb-3"></ul>
+
+          <h5><i class="fa-solid fa-user"></i> Customer Info</h5>
+          <form id="orderForm" onsubmit="submitOrder(event)">
+            <input type="text" id="fullName" class="form-control mb-2" placeholder="Full Name" required>
+            <input type="text" id="phone" class="form-control mb-2" placeholder="Phone Number" required>
+            <textarea id="address" class="form-control mb-2" placeholder="Address" required></textarea>
+            <button type="submit" class="btn btn-success w-100"><i class="fa-brands fa-whatsapp"></i> Submit Order via WhatsApp</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <footer class="footer">
+    <div class="container py-5">
+      <div class="row">
+        
+        <!-- Contact Us -->
+        <div class="col-md-3 col-sm-6 mb-4">
+          <h5 class="footer-title"><i class="fas fa-phone-alt me-2"></i> Contact Us</h5>
+          <p><i class="fas fa-phone me-2"></i> +234 701 234 5678</p>
+          <p><i class="fab fa-whatsapp me-2"></i> 
+            <a href="https://wa.me/2347012345678" target="_blank">Chat with us</a>
+          </p>
+        </div>
+  
+        <!-- Address -->
+        <div class="col-md-3 col-sm-6 mb-4">
+          <h5 class="footer-title"><i class="fas fa-map-marker-alt me-2"></i> Address</h5>
+          <p>123 YS Furniture Plaza,</p>
+          <p>Asaba, Delta State, Nigeria</p>
+        </div>
+  
+        <!-- Quick Links -->
+        <div class="col-md-3 col-sm-6 mb-4">
+          <h5 class="footer-title"><i class="fas fa-link me-2"></i> Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html"><i class="fas fa-home me-2"></i> Home</a></li>
+            <li><a href="products.html"><i class="fas fa-th me-2"></i> Our Products</a></li>
+            <li><a href="#locations"><i class="fas fa-map-marker-alt me-2"></i> Locations</a></li>
+            <li><a href="about.html"><i class="fas fa-envelope me-2"></i> Contact</a></li>
+          </ul>
+        </div>
+  
+        <!-- Support & Connect -->
+        <div class="col-md-3 col-sm-6 mb-4">
+          <h5 class="footer-title"><i class="fas fa-headset me-2"></i> Support</h5>
+          <p><i class="fas fa-envelope me-2"></i> info@ysfurniture.com</p>
+          <p><i class="fas fa-clock me-2"></i> Mon-Sat: 8AM - 6PM</p>
+        </div>
+      </div>
+
+      <div class="social-icons mt-3">
+        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-white me-2"><i class="fab fa-tiktok"></i></a>
+        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+      </div>
+  
+      <hr class="footer-divider">
+  
+      <!-- Copyright -->
+      <div class="text-center mt-3">
+        <p>&copy; 2025 <strong>YS Furniture</strong>. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let cart = [];
+
+    const products = [
+      {category:"wine", title:"Classic Wine Shelf", price:"₦1,200,000", discount:"₦1,080,000", img:"https://via.placeholder.com/300x180?text=Wine+Shelf"},
+      {category:"wine", title:"Premium Wine Cabinet", price:"₦1,500,000", discount:"₦1,350,000", img:"https://via.placeholder.com/300x180?text=Wine+Cabinet"},
+      {category:"dining", title:"Modern Dining Set", price:"₦1,100,000", discount:"₦990,000", img:"https://via.placeholder.com/300x180?text=Dining+Set"},
+      {category:"dining", title:"Royal Dining Table", price:"₦2,000,000", discount:"₦1,800,000", img:"https://via.placeholder.com/300x180?text=Royal+Dining"},
+      {category:"chairs", title:"Luxury Sofa Set", price:"₦950,000", discount:"₦855,000", img:"https://via.placeholder.com/300x180?text=Luxury+Sofa"},
+      {category:"chairs", title:"Recliner Chair", price:"₦500,000", discount:"₦450,000", img:"https://via.placeholder.com/300x180?text=Recliner"},
+      {category:"kitchen", title:"Wooden Kitchen Cabinet", price:"₦750,000", discount:"₦675,000", img:"https://via.placeholder.com/300x180?text=Kitchen+Cabinet"},
+      {category:"kitchen", title:"Luxury Modular Kitchen", price:"₦2,200,000", discount:"₦1,980,000", img:"https://via.placeholder.com/300x180?text=Modular+Kitchen"},
+      {category:"doors", title:"Steel Security Door", price:"₦600,000", discount:"₦540,000", img:"https://via.placeholder.com/300x180?text=Security+Door"},
+      {category:"doors", title:"Classic Wooden Door", price:"₦350,000", discount:"₦315,000", img:"https://via.placeholder.com/300x180?text=Wooden+Door"},
+      {category:"bed", title:"King Size Bed", price:"₦1,300,000", discount:"₦1,170,000", img:"https://via.placeholder.com/300x180?text=King+Bed"},
+      {category:"bed", title:"Children Bunk Bed", price:"₦500,000", discount:"₦450,000", img:"https://via.placeholder.com/300x180?text=Bunk+Bed"},
+      {category:"tv", title:"Modern TV Console", price:"₦800,000", discount:"₦720,000", img:"https://via.placeholder.com/300x180?text=TV+Console"},
+      {category:"tv", title:"Wall Mounted Console", price:"₦650,000", discount:"₦585,000", img:"https://via.placeholder.com/300x180?text=Wall+Console"},
+      {category:"chairs", title:"Executive Office Chair", price:"₦400,000", discount:"₦360,000", img:"https://via.placeholder.com/300x180?text=Office+Chair"},
+      {category:"dining", title:"Glass Dining Table", price:"₦1,400,000", discount:"₦1,260,000", img:"https://via.placeholder.com/300x180?text=Glass+Dining"},
+      {category:"doors", title:"Sliding Glass Door", price:"₦700,000", discount:"₦630,000", img:"https://via.placeholder.com/300x180?text=Glass+Door"},
+      {category:"wine", title:"Compact Wine Shelf", price:"₦850,000", discount:"₦765,000", img:"https://via.placeholder.com/300x180?text=Compact+Wine"},
+      {category:"bed", title:"Luxury Bed Frame", price:"₦1,800,000", discount:"₦1,620,000", img:"https://via.placeholder.com/300x180?text=Luxury+Bed"},
+      {category:"tv", title:"Premium TV Stand", price:"₦900,000", discount:"₦810,000", img:"https://via.placeholder.com/300x180?text=Premium+TV"}
+    ];
+
+    window.onload = () => {
+      const productContainer = document.getElementById("products");
+      products.forEach(p => {
+        productContainer.innerHTML += `
+          <div class="col-md-4 mb-4 product" data-category="${p.category}">
+            <div class="card p-3">
+              <img src="${p.img}" alt="${p.title}">
+              <h5 class="card-title mt-2">${p.title}</h5>
+              <p class="price">${p.price}</p>
+              <p class="discount">10% OFF → ${p.discount}</p>
+              <button class="btn cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+            </div>
+          </div>`;
+      });
+    };
+
+    // Add to cart
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("add-to-cart")) {
+        const card = e.target.closest(".card");
+        const title = card.querySelector(".card-title").innerText;
+        const discountPrice = card.querySelector(".discount").innerText.split("→ ")[1];
+
+        cart.push({ title, price: discountPrice });
+        document.getElementById("cartCount").innerText = cart.length;
+        alert("You have added one to cart");
+      }
+    });
+
+    // Show cart items
+    document.getElementById("cartModal").addEventListener("show.bs.modal", () => {
+      const cartItems = document.getElementById("cartItems");
+      cartItems.innerHTML = "";
+      cart.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between";
+        li.innerHTML = `<span>${item.title}</span><span>${item.price}</span>`;
+        cartItems.appendChild(li);
+      });
+    });
+
+    // Category filter
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("filter-btn")) {
+        const category = e.target.dataset.category;
+        document.querySelectorAll(".product").forEach(product => {
+          product.style.display = (category === "all" || product.dataset.category === category) ? "block" : "none";
+        });
+      }
+    });
+
+    // Submit order via WhatsApp
+    async function submitOrder(event) {
+      event.preventDefault();
+
+      const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
+      const data = await response.json();
+      const whatsappNumber = data.whatsapp;
+
+      // Collect customer details
+      let name = document.getElementById("fullName").value;
+      let phone = document.getElementById("phone").value;
+      let address = document.getElementById("address").value;
+
+      // Build cart details
+      let cartDetails = cart.map(item => `- ${item.title} (${item.price})`).join("%0A");
+
+      // Example message
+      let message = `Hello, my name is ${name}.%0AMy phone is ${phone}.%0AMy address is: ${address}.%0A%0AI want to order:%0A${cartDetails}`;
+
+      // Redirect to WhatsApp with the hidden number
+      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    }
+  </script>
+</body>
+</html>
+
