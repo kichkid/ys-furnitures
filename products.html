@@ -361,6 +361,27 @@ footer {
       // Redirect to WhatsApp with the hidden number
       window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
     }
+
+    // Mobile devices sometimes have issues with window.open, so we try multiple approaches
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                
+                if (isMobile) {
+                    // For mobile devices, use a direct link that might work better
+                    setTimeout(() => {
+                        window.location.href = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
+                    }, 1000);
+                } else {
+                    // For desktop, use standard approach
+                    setTimeout(() => {
+                        window.open(`https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`, "_blank");
+                    }, 1000);
+                }
+                
+                setButtonState(false);
+                
+            
+        
+          
   </script>
 </body>
 </html>
