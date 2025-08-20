@@ -3,303 +3,725 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sliding Header Animation</title>
+    <title>YS Nations Furniture - Premium Home Furnishings</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Enhanced Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #e67e22;
+            animation: spin 1.2s ease-in-out infinite;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .loader::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid transparent;
+            border-top: 2px solid #f1c40f;
+            border-radius: 50%;
+            animation: spin 1.6s linear infinite;
+        }
+        
+        .loader-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .loader-text {
+            color: #ecf0f1;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        
+        .countdown-container {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin-top: 10px;
+        }
+        
+        .countdown {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: countdownPop 0.5s ease-in-out;
+        }
+        
+        .countdown-circle {
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .countdown-progress {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #e67e22;
+            border-radius: 50%;
+            border-top: 2px solid transparent;
+            border-right: 2px solid transparent;
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            animation: countdownProgress 3s linear forwards;
+        }
+        
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes countdownPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        @keyframes countdownProgress {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Main Content - Initially Hidden */
+        #main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+
+        /* Rest of your styles */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e67e22;
+            --accent: #f1c40f;
+            --light: #ecf0f1;
+            --dark: #34495e;
+        }
+        
+        .sliding-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header-content {
+            display: flex;
+            animation: slide 20s linear infinite;
+            white-space: nowrap;
+        }
+        
+        .logo {
+            padding: 0 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .navbar {
+            background: var(--dark) !important;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 10px;
+            text-align: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+        }
+        
+        .hero-highlights {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .highlight-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .highlight-item i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .cta-button {
+            background: var(--secondary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .about-section {
+            padding: 80px 0;
+            background: var(--light);
+        }
+        
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .about-image {
+            position: relative;
+        }
+        
+        .image-frame {
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .image-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .floating-tags {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .tag {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .title-decor {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        .underline {
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+        }
+        
+        .drop-cap {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary);
+            float: left;
+            line-height: 1;
+            margin-right: 10px;
+        }
+        
+        .lead-paragraph {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .highlight-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .highlight-box i {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            color: var(--secondary);
+            opacity: 0.2;
+        }
+        
+        .features-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .feature-icon {
+            background: var(--secondary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .feature-text h3 {
+            margin-bottom: 5px;
+        }
+        
+        footer { 
+            background: #2c3e50; 
+            color: #fff; 
+            padding: 50px 0 20px; 
+            margin-top: 60px; 
+        }
+        
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+        }
+        
+        .footer a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .footer a:hover {
+            color: var(--accent);
+        }
+        
+        .social-icons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-divider {
+            border-color: rgba(255,255,255,0.1);
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-highlights {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .loader-text {
+                font-size: 14px;
+                max-width: 250px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-    <style>
-        :root {
-      --primary: #2c3e50;
-      --secondary: #e67e22;
-      --accent: #f1c40f;
-      --light: #ecf0f1;
-      --dark: #34495e;
-    }
-    
-    footer { 
-    background: #2c3e50; 
-    color: #fff; 
-    padding: 50px 0 20px; 
-    margin-top: 60px; 
-  }
-  
-  .footer-title {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-    position: relative;
-    padding-bottom: 10px;
-  }
-  
-  .footer-title:after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 3px;
-    background: var(--secondary);
-  }
-  
-  .footer a {
-    color: #ddd;
-    text-decoration: none;
-    transition: color 0.3s;
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  .footer a:hover {
-    color: var(--accent);
-  }
-  
-  .social-icons {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .social-icons a {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    margin: 0 5px;
-    transition: all 0.3s;
-  }
-  
-  .social-icons a:hover {
-    background: var(--secondary);
-    transform: translateY(-3px);
-  }
-  
-  .footer-divider {
-    border-color: rgba(255,255,255,0.1);
-    margin: 30px 0;
-  }
-    </style>
-
-
-
-<header class="sliding-header">
-    <div class="header-content">
-        <div class="logo">YS    Nations Furniture</div>
-        <div class="logo">Got-You</div>
-        <div class="logo">Covered</div>
-        <div class="logo">Nation  Wide</div>
-    </div>
-</header>
-    
-<!-- ✅ Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mt-0 py-3 position-sticky top-0">
-  <div class="container">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="images/logo.png" alt="YS Furniture Logo" width="40" height="40" class="me-2">
-      <span class="fw-bold">YS Furniture</span>
-    </a>
-
-    <!-- Toggler (for mobile) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Navbar Links -->
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-home"></i> Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="products.html"><i class="fas fa-th"></i> View Our Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-   
-
-    
-
-    
-
-
-
-
-
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Welcome to YS Nations Furniture</h1>
-                <p class="tagline">Where Quality Meets Comfort</p>
-                <div class="hero-highlights">
-                    <div class="highlight-item">
-                        <i class="fas fa-star"></i>
-                        <p>Premium Quality Furniture</p>
-                    </div>
-                    <div class="highlight-item">
-                        <i class="fas fa-tags"></i>
-                        <p>Best Prices Guaranteed</p>
-                    </div>
-                    <div class="highlight-item">
-                        <i class="fas fa-truck"></i>
-                        <p>Nationwide Delivery</p>
-                    </div>
-                </div>
-                <a href="products.html" class="cta-button">Explore Our Collection</a>
+    <!-- Enhanced Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+        <div class="loader-logo">YS FURNITURE</div>
+        <div class="loader-text">Loading premium collection...</div>
+        <div class="countdown-container">
+            <div class="countdown-circle">
+                <div class="countdown-progress"></div>
             </div>
-        </section>
-    
+            <div class="countdown" id="countdown">3</div>
+        </div>
+    </div>
 
-        <section class="about-section">
-            <div class="about-container">
-                <div class="about-image">
-                    <div class="image-frame">
-                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Modern Furniture">
-                        <div class="image-badge">
-                            <span>Since 2018</span>
-                        </div>
-                    </div>
-                    <div class="floating-tags">
-                        <span class="tag">Premium Quality</span>
-                        <span class="tag">Eco-Friendly</span>
-                        <span class="tag">Handcrafted</span>
-                    </div>
-                </div>
-                
-                <div class="about-content">
-                    <h2 class="section-title">
-                        <span class="title-decor">//</span> Crafted with Excellence
-                        <span class="underline"></span>
-                    </h2>
-                    
-                    <div class="about-text">
-                        <p class="lead-paragraph">
-                            <span class="drop-cap">A</span>t YS Nations Furniture, we create premium furniture pieces using the finest foreign materials, expertly crafted right here in Nigeria.
-                        </p>
-                        
-                        <p>Our unique blend of international quality standards and local craftsmanship results in exceptional furniture that stands the test of time.</p>
-                        
-                        <div class="highlight-box">
-                            <i class="fas fa-quote-left"></i>
-                            <p>Bringing global quality to Nigerian homes through locally crafted masterpieces</p>
-                        </div>
-                    </div>
-                    
-                    <ul class="features-list">
-                        <li>
-                            <div class="feature-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h3>100% Premium Materials</h3>
-                                <p>Sourced from the finest suppliers worldwide</p>
-                            </div>
+    <!-- Main Content (initially hidden) -->
+    <div id="main-content">
+        <header class="sliding-header">
+            <div class="header-content">
+                <div class="logo">YS Nations Furniture</div>
+                <div class="logo">Got-You</div>
+                <div class="logo">Covered</div>
+                <div class="logo">Nation Wide</div>
+            </div>
+        </header>
+        
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mt-0 py-3 position-sticky top-0">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="images/logo.png" alt="YS Furniture Logo" width="40" height="40" class="me-2">
+                    <span class="fw-bold">YS Furniture</span>
+                </a>
+
+                <!-- Toggler (for mobile) -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-home"></i> Home</a>
                         </li>
-                        <li>
-                            <div class="feature-icon">
-                                <i class="fas fa-hands-helping"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h3>Expert Nigerian Craftsmanship</h3>
-                                <p>Skilled artisans with decades of experience</p>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html"><i class="fas fa-th"></i> View Our Products</a>
                         </li>
-                        <li>
-                            <div class="feature-icon">
-                                <i class="fas fa-pencil-ruler"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h3>Custom Design Options</h3>
-                                <p>Tailored to your specific needs and space</p>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="feature-text">
-                                <h3>5-Year Quality Guarantee</h3>
-                                <p>Our promise of durability and satisfaction</p>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
                         </li>
                     </ul>
                 </div>
             </div>
-        </section>
+        </nav>
         
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Welcome to YS Nations Furniture</h1>
+                    <p class="tagline">Where Quality Meets Comfort</p>
+                    <div class="hero-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-star"></i>
+                            <p>Premium Quality Furniture</p>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-tags"></i>
+                            <p>Best Prices Guaranteed</p>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-truck"></i>
+                            <p>Nationwide Delivery</p>
+                        </div>
+                    </div>
+                    <a href="products.html" class="cta-button">Explore Our Collection</a>
+                </div>
+            </section>
         
-    </main>
+            <section class="about-section">
+                <div class="about-container">
+                    <div class="about-image">
+                        <div class="image-frame">
+                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Modern Furniture">
+                            <div class="image-badge">
+                                <span>Since 2018</span>
+                            </div>
+                        </div>
+                        <div class="floating-tags">
+                            <span class="tag">Premium Quality</span>
+                            <span class="tag">Eco-Friendly</span>
+                            <span class="tag">Handcrafted</span>
+                        </div>
+                    </div>
+                    
+                    <div class="about-content">
+                        <h2 class="section-title">
+                            <span class="title-decor">//</span> Crafted with Excellence
+                            <span class="underline"></span>
+                        </h2>
+                        
+                        <div class="about-text">
+                            <p class="lead-paragraph">
+                                <span class="drop-cap">A</span>t YS Nations Furniture, we create premium furniture pieces using the finest foreign materials, expertly crafted right here in Nigeria.
+                            </p>
+                            
+                            <p>Our unique blend of international quality standards and local craftsmanship results in exceptional furniture that stands the test of time.</p>
+                            
+                            <div class="highlight-item">
+                                <i class="fas fa-quote-left"></i>
+                                <p>Bringing global quality to Nigerian homes through locally crafted masterpieces</p>
+                            </div>
+                        </div>
+                        
+                        <ul class="features-list">
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>100% Premium Materials</h3>
+                                    <p>Sourced from the finest suppliers worldwide</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-hands-helping"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Expert Nigerian Craftsmanship</h3>
+                                    <p>Skilled artisans with decades of experience</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-pencil-ruler"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>Custom Design Options</h3>
+                                    <p>Tailored to your specific needs and space</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-text">
+                                    <h3>5-Year Quality Guarantee</h3>
+                                    <p>Our promise of durability and satisfaction</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-
-    <footer class="footer">
-        <div class="container py-5">
-          <div class="row">
+        <footer class="footer">
+            <div class="container py-5">
+                <div class="row">
+                    
+                    <!-- Contact Us -->
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <h5 class="footer-title"><i class="fas fa-phone-alt me-2"></i> Contact Us</h5>
+                        <p><i class="fas fa-phone me-2"></i> +234 701 234 5678</p>
+                        <p><i class="fab fa-whatsapp me-2"></i> 
+                            <a href="https://wa.me/2347012345678" target="_blank">Chat with us</a>
+                        </p>
+                    </div>
             
-            <!-- Contact Us -->
-            <div class="col-md-3 col-sm-6 mb-4">
-              <h5 class="footer-title"><i class="fas fa-phone-alt me-2"></i> Contact Us</h5>
-              <p><i class="fas fa-phone me-2"></i> +234 701 234 5678</p>
-              <p><i class="fab fa-whatsapp me-2"></i> 
-                <a href="https://wa.me/2347012345678" target="_blank">Chat with us</a>
-              </p>
+                    <!-- Address -->
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <h5 class="footer-title"><i class="fas fa-map-marker-alt me-2"></i> Address</h5>
+                        <p>123 YS Furniture Plaza,</p>
+                        <p>Asaba, Delta State, Nigeria</p>
+                    </div>
+            
+                    <!-- Quick Links -->
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <h5 class="footer-title"><i class="fas fa-link me-2"></i> Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="index.html"><i class="fas fa-home me-2"></i> Home</a></li>
+                            <li><a href="products.html"><i class="fas fa-th me-2"></i> Our Products</a></li>
+                            <li><a href="#locations"><i class="fas fa-map-marker-alt me-2"></i> Locations</a></li>
+                            <li><a href="about.html"><i class="fas fa-envelope me-2"></i> Contact</a></li>
+                        </ul>
+                    </div>
+            
+                    <!-- Support & Connect -->
+                    <div class="col-md-3 col-sm-6 mb-4">
+                        <h5 class="footer-title"><i class="fas fa-headset me-2"></i> Support</h5>
+                        <p><i class="fas fa-envelope me-2"></i> info@ysfurniture.com</p>
+                        <p><i class="fas fa-clock me-2"></i> Mon-Sat: 8AM - 6PM</p>
+                    </div>
+                </div>
+        
+                <div class="social-icons mt-3">
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                </div>
+            
+                <hr class="footer-divider">
+            
+                <!-- Copyright -->
+                <div class="text-center mt-3">
+                    <p>&copy; 2025 <strong>YS Furniture</strong>. All rights reserved.</p>
+                </div>
             </div>
-      
-            <!-- Address -->
-            <div class="col-md-3 col-sm-6 mb-4">
-              <h5 class="footer-title"><i class="fas fa-map-marker-alt me-2"></i> Address</h5>
-              <p>123 YS Furniture Plaza,</p>
-              <p>Asaba, Delta State, Nigeria</p>
-            </div>
-      
-            <!-- Quick Links -->
-            <div class="col-md-3 col-sm-6 mb-4">
-              <h5 class="footer-title"><i class="fas fa-link me-2"></i> Quick Links</h5>
-              <ul class="list-unstyled">
-                <li><a href="index.html"><i class="fas fa-home me-2"></i> Home</a></li>
-                <li><a href="products.html"><i class="fas fa-th me-2"></i> Our Products</a></li>
-                <li><a href="#locations"><i class="fas fa-map-marker-alt me-2"></i> Locations</a></li>
-                <li><a href="about.html"><i class="fas fa-envelope me-2"></i> Contact</a></li>
-              </ul>
-            </div>
-      
-            <!-- Support & Connect -->
-            <div class="col-md-3 col-sm-6 mb-4">
-              <h5 class="footer-title"><i class="fas fa-headset me-2"></i> Support</h5>
-              <p><i class="fas fa-envelope me-2"></i> info@ysfurniture.com</p>
-              <p><i class="fas fa-clock me-2"></i> Mon-Sat: 8AM - 6PM</p>
-            </div>
-          </div>
-    
-          <div class="social-icons mt-3">
-            <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-tiktok"></i></a>
-            <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
-          </div>
-      
-          <hr class="footer-divider">
-      
-          <!-- Copyright -->
-          <div class="text-center mt-3">
-            <p>&copy; 2025 <strong>YS Furniture</strong>. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-      
+        </footer>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    
+    <script>
+        // Enhanced Preloader functionality with animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            const countdown = document.getElementById('countdown');
+            
+            let timeLeft = 3;
+            const interval = 1000; // Update every second
+            
+            // Initial animation
+            setTimeout(() => {
+                countdown.style.animation = 'countdownPop 0.5s ease-in-out';
+            }, 500);
+            
+            // Update countdown
+            const timer = setInterval(function() {
+                timeLeft -= 1;
+                
+                if (timeLeft >= 0) {
+                    // Add animation to countdown change
+                    countdown.style.animation = 'none';
+                    setTimeout(() => {
+                        countdown.textContent = timeLeft;
+                        countdown.style.animation = 'countdownPop 0.5s ease-in-out';
+                    }, 10);
+                }
+                
+                if (timeLeft < 0) {
+                    clearInterval(timer);
+                    
+                    // Final animation before hiding
+                    countdown.textContent = "✓";
+                    countdown.style.animation = 'countdownPop 0.8s ease-in-out';
+                    
+                    // Hide preloader and show main content
+                    setTimeout(function() {
+                        preloader.style.opacity = "0";
+                        setTimeout(function() {
+                            preloader.style.display = "none";
+                            mainContent.style.opacity = "1";
+                        }, 500);
+                    }, 800);
+                }
+            }, interval);
+        });
+    </script>
 </body>
 </html>

@@ -220,6 +220,9 @@
         <i class="fa-solid fa-cart-shopping "></i> View Cart 
         <span id="cartCount">0</span>
       </button>
+      <button id="clearCartBtn" class="btn btn-outline-danger ms-2">
+        <i class="fas fa-trash"></i> Clear Cart
+      </button>
     </div>
 
     <!-- Products -->
@@ -268,7 +271,7 @@
       <div class="row">
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="footer-title"><i class="fas fa-phone-alt me-2"></i> Contact Us</h5>
-          <p><i class="fas fa-phone me-2"></i> +234 7026972403</p>
+          <p><i class="fas fa-phone me-2"></i> +234 701 234 5678</p>
           <p><i class="fab fa-whatsapp me-2"></i> 
             <a href="https://wa.me/2347012345678" target="_blank">Chat with us</a>
           </p>
@@ -285,7 +288,7 @@
           <ul class="list-unstyled">
             <li><a href="index.html"><i class="fas fa-home me-2"></i> Home</a></li>
             <li><a href="products.html"><i class="fas fa-th me-2"></i> Our Products</a></li>
-            <li><a href="#locations"><i class="fas fa-map-marker-alt me-2"></i> Locations</a></li>
+            <li><a href="about.html"><i class="fas fa-map-marker-alt me-2"></i> Locations</a></li>
             <li><a href="about.html"><i class="fas fa-envelope me-2"></i> Contact</a></li>
           </ul>
         </div>
@@ -321,34 +324,46 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    let cart = [];
+    // Initialize cart from localStorage or empty array
+    let cart = JSON.parse(localStorage.getItem('ysfurniture_cart')) || [];
 
     const products = [
-      {category:"wine", title:"Classic Wine Shelf", price:"₦1,200,000", discount:"₦1,080,000", img:"https://via.placeholder.com/300x180?text=Wine+Shelf"},
-      {category:"wine", title:"Premium Wine Cabinet", price:"₦1,500,000", discount:"₦1,350,000", img:"https://via.placeholder.com/300x180?text=Wine+Cabinet"},
-      {category:"dining", title:"Modern Dining Set", price:"₦1,100,000", discount:"₦990,000", img:"https://via.placeholder.com/300x180?text=Dining+Set"},
-      {category:"dining", title:"Royal Dining Table", price:"₦2,000,000", discount:"₦1,800,000", img:"https://via.placeholder.com/300x180?text=Royal+Dining"},
-      {category:"chairs", title:"Luxury Sofa Set", price:"₦950,000", discount:"₦855,000", img:"https://via.placeholder.com/300x180?text=Luxury+Sofa"},
-      {category:"chairs", title:"Recliner Chair", price:"₦500,000", discount:"₦450,000", img:"https://via.placeholder.com/300x180?text=Recliner"},
-      {category:"kitchen", title:"Wooden Kitchen Cabinet", price:"₦750,000", discount:"₦675,000", img:"https://via.placeholder.com/300x180?text=Kitchen+Cabinet"},
-      {category:"kitchen", title:"Luxury Modular Kitchen", price:"₦2,200,000", discount:"₦1,980,000", img:"https://via.placeholder.com/300x180?text=Modular+Kitchen"},
-      {category:"doors", title:"Steel Security Door", price:"₦600,000", discount:"₦540,000", img:"https://via.placeholder.com/300x180?text=Security+Door"},
-      {category:"doors", title:"Classic Wooden Door", price:"₦350,000", discount:"₦315,000", img:"https://via.placeholder.com/300x180?text=Wooden+Door"},
-      {category:"bed", title:"King Size Bed", price:"₦1,300,000", discount:"₦1,170,000", img:"https://via.placeholder.com/300x180?text=King+Bed"},
-      {category:"bed", title:"Children Bunk Bed", price:"₦500,000", discount:"₦450,000", img:"https://via.placeholder.com/300x180?text=Bunk+Bed"},
-      {category:"tv", title:"Modern TV Console", price:"₦800,000", discount:"₦720,000", img:"https://via.placeholder.com/300x180?text=TV+Console"},
-      {category:"tv", title:"Wall Mounted Console", price:"₦650,000", discount:"₦585,000", img:"https://via.placeholder.com/300x180?text=Wall+Console"},
-      {category:"chairs", title:"Executive Office Chair", price:"₦400,000", discount:"₦360,000", img:"https://via.placeholder.com/300x180?text=Office+Chair"},
-      {category:"dining", title:"Glass Dining Table", price:"₦1,400,000", discount:"₦1,260,000", img:"https://via.placeholder.com/300x180?text=Glass+Dining"},
-      {category:"doors", title:"Sliding Glass Door", price:"₦700,000", discount:"₦630,000", img:"https://via.placeholder.com/300x180?text=Glass+Door"},
-      {category:"wine", title:"Compact Wine Shelf", price:"₦850,000", discount:"₦765,000", img:"https://via.placeholder.com/300x180?text=Compact+Wine"},
-      {category:"bed", title:"Luxury Bed Frame", price:"₦1,800,000", discount:"₦1,620,000", img:"https://via.placeholder.com/300x180?text=Luxury+Bed"},
-      {category:"tv", title:"Premium TV Stand", price:"₦900,000", discount:"₦810,000", img:"https://via.placeholder.com/300x180?text=Premium+TV"}
+      {id: 1, category:"wine", title:"Classic Wine Shelf", price:"₦1,200,000", discount:"₦1,080,000", img:"https://via.placeholder.com/300x180?text=Wine+Shelf"},
+      {id: 2, category:"wine", title:"Premium Wine Cabinet", price:"₦1,500,000", discount:"₦1,350,000", img:"https://via.placeholder.com/300x180?text=Wine+Cabinet"},
+      {id: 3, category:"dining", title:"Modern Dining Set", price:"₦1,100,000", discount:"₦990,000", img:"https://via.placeholder.com/300x180?text=Dining+Set"},
+      {id: 4, category:"dining", title:"Royal Dining Table", price:"₦2,000,000", discount:"₦1,800,000", img:"https://via.placeholder.com/300x180?text=Royal+Dining"},
+      {id: 5, category:"chairs", title:"Luxury Sofa Set", price:"₦950,000", discount:"₦855,000", img:"https://via.placeholder.com/300x180?text=Luxury+Sofa"},
+      {id: 6, category:"chairs", title:"Recliner Chair", price:"₦500,000", discount:"₦450,000", img:"https://via.placeholder.com/300x180?text=Recliner"},
+      {id: 7, category:"kitchen", title:"Wooden Kitchen Cabinet", price:"₦750,000", discount:"₦675,000", img:"https://via.placeholder.com/300x180?text=Kitchen+Cabinet"},
+      {id: 8, category:"kitchen", title:"Luxury Modular Kitchen", price:"₦2,200,000", discount:"₦1,980,000", img:"https://via.placeholder.com/300x180?text=Modular+Kitchen"},
+      {id: 9, category:"doors", title:"Steel Security Door", price:"₦600,000", discount:"₦540,000", img:"https://via.placeholder.com/300x180?text=Security+Door"},
+      {id: 10, category:"doors", title:"Classic Wooden Door", price:"₦350,000", discount:"₦315,000", img:"https://via.placeholder.com/300x180?text=Wooden+Door"},
+      {id: 11, category:"bed", title:"King Size Bed", price:"₦1,300,000", discount:"₦1,170,000", img:"https://via.placeholder.com/300x180?text=King+Bed"},
+      {id: 12, category:"bed", title:"Children Bunk Bed", price:"₦500,000", discount:"₦450,000", img:"https://via.placeholder.com/300x180?text=Bunk+Bed"},
+      {id: 13, category:"tv", title:"Modern TV Console", price:"₦800,000", discount:"₦720,000", img:"https://via.placeholder.com/300x180?text=TV+Console"},
+      {id: 14, category:"tv", title:"Wall Mounted Console", price:"₦650,000", discount:"₦585,000", img:"https://via.placeholder.com/300x180?text=Wall+Console"},
+      {id: 15, category:"chairs", title:"Executive Office Chair", price:"₦400,000", discount:"₦360,000", img:"https://via.placeholder.com/300x180?text=Office+Chair"},
+      {id: 16, category:"dining", title:"Glass Dining Table", price:"₦1,400,000", discount:"₦1,260,000", img:"https://via.placeholder.com/300x180?text=Glass+Dining"},
+      {id: 17, category:"doors", title:"Sliding Glass Door", price:"₦700,000", discount:"₦630,000", img:"https://via.placeholder.com/300x180?text=Glass+Door"},
+      {id: 18, category:"wine", title:"Compact Wine Shelf", price:"₦850,000", discount:"₦765,000", img:"https://via.placeholder.com/300x180?text=Compact+Wine"},
+      {id: 19, category:"bed", title:"Luxury Bed Frame", price:"₦1,800,000", discount:"₦1,620,000", img:"https://via.placeholder.com/300x180?text=Luxury+Bed"},
+      {id: 20, category:"tv", title:"Premium TV Stand", price:"₦900,000", discount:"₦810,000", img:"https://via.placeholder.com/300x180?text=Premium+TV"}
     ];
 
     // DOM elements
     const notification = document.getElementById('notification');
     const notificationText = document.getElementById('notificationText');
+
+    // Save cart to localStorage
+    function saveCartToStorage() {
+      localStorage.setItem('ysfurniture_cart', JSON.stringify(cart));
+    }
+
+    // Update cart count display
+    function updateCartCount() {
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      document.getElementById("cartCount").innerText = totalItems;
+    }
 
     // Show notification function
     function showNotification(message, isError = false) {
@@ -366,6 +381,7 @@
       }, 5000);
     }
 
+    // Initialize the page
     window.onload = () => {
       const productContainer = document.getElementById("products");
       products.forEach(p => {
@@ -376,30 +392,40 @@
               <h5 class="card-title mt-2">${p.title}</h5>
               <p class="price">${p.price}</p>
               <p class="discount">10% OFF → ${p.discount}</p>
-              <button class=" cta-button add-to-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class=" cta-button add-to-cart" data-id="${p.id}"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
             </div>
           </div>`;
       });
+
+      // Update cart count on page load
+      updateCartCount();
     };
 
     // Add to cart
     document.addEventListener("click", (e) => {
       if (e.target.classList.contains("add-to-cart")) {
-        const card = e.target.closest(".card");
-        const title = card.querySelector(".card-title").innerText;
-        const discountPrice = card.querySelector(".discount").innerText.split("→ ")[1];
-        const price = parseFloat(discountPrice.replace(/[^\d.]/g, ''));
-
-        // Check if item already exists in cart
-        const existingItem = cart.find(item => item.title === title);
-        if (existingItem) {
-          existingItem.quantity += 1;
-        } else {
-          cart.push({ title, price: discountPrice, quantity: 1 });
-        }
+        const productId = parseInt(e.target.dataset.id);
+        const product = products.find(p => p.id === productId);
         
-        document.getElementById("cartCount").innerText = cart.reduce((total, item) => total + item.quantity, 0);
-        showNotification(`${title} added to cart!`);
+        if (product) {
+          // Check if item already exists in cart
+          const existingItem = cart.find(item => item.id === productId);
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({
+              id: product.id,
+              title: product.title,
+              price: product.discount,
+              quantity: 1
+            });
+          }
+          
+          // Save to localStorage and update UI
+          saveCartToStorage();
+          updateCartCount();
+          showNotification(`${product.title} added to cart!`);
+        }
       }
     });
 
@@ -415,8 +441,10 @@
         li.innerHTML = `
           <span>${item.title}</span>
           <div>
-            <span class="badge bg-secondary me-2">${item.quantity}</span>
-            <span>${item.price}</span>
+            <button class="btn btn-sm btn-outline-secondary decrease-quantity" data-id="${item.id}">-</button>
+            <span class="badge bg-secondary mx-2">${item.quantity}</span>
+            <button class="btn btn-sm btn-outline-secondary increase-quantity" data-id="${item.id}">+</button>
+            <span class="ms-3">${item.price}</span>
           </div>`;
         cartItems.appendChild(li);
         
@@ -427,6 +455,56 @@
       
       // Format total as Nigerian Naira
       document.getElementById("cartTotal").textContent = `₦${total.toLocaleString()}`;
+    });
+
+    // Handle quantity changes in cart
+    document.addEventListener("click", (e) => {
+      if (e.target.classList.contains("increase-quantity")) {
+        const productId = parseInt(e.target.dataset.id);
+        const item = cart.find(item => item.id === productId);
+        if (item) {
+          item.quantity += 1;
+          saveCartToStorage();
+          // Refresh cart modal
+          bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
+          setTimeout(() => {
+            document.getElementById('cartModal').click();
+          }, 100);
+        }
+      }
+      
+      if (e.target.classList.contains("decrease-quantity")) {
+        const productId = parseInt(e.target.dataset.id);
+        const itemIndex = cart.findIndex(item => item.id === productId);
+        if (itemIndex !== -1) {
+          if (cart[itemIndex].quantity > 1) {
+            cart[itemIndex].quantity -= 1;
+          } else {
+            cart.splice(itemIndex, 1);
+          }
+          saveCartToStorage();
+          updateCartCount();
+          // Refresh cart modal
+          bootstrap.Modal.getInstance(document.getElementById('cartModal')).hide();
+          setTimeout(() => {
+            document.getElementById('cartModal').click();
+          }, 100);
+        }
+      }
+    });
+
+    // Clear cart button
+    document.getElementById("clearCartBtn").addEventListener("click", () => {
+      if (cart.length > 0) {
+        if (confirm("Are you sure you want to clear your cart?")) {
+          cart = [];
+          saveCartToStorage();
+          updateCartCount();
+          showNotification("Cart cleared successfully!");
+        }
+      } else {
+        showNotification("Your cart is already empty!", true);
+      }
     });
 
     // Category filter
@@ -526,6 +604,11 @@
             window.open(`https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`, "_blank");
           }, 1000);
         }
+        
+        // Clear cart after successful order
+        cart = [];
+        saveCartToStorage();
+        updateCartCount();
         
       } catch (error) {
         console.error("Error submitting order:", error);
