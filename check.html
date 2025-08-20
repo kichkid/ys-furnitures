@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Order System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background: #25D366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .cart-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 25px;
+            background: #f9f9f9;
+        }
+        
+        .form-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 25px;
+            background: white;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #25D366;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: 500;
+        }
+        
+        .item-price {
+            color: #25D366;
+            font-weight: bold;
+        }
+        
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #ddd;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            border-color: #25D366;
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        button:hover {
+            background: #128C7E;
+        }
+        
+        button:disabled {
+            background: #a0dbb8;
+            cursor: not-allowed;
+        }
+        
+        .whatsapp-icon {
+            font-size: 24px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: #25D366;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .notification.error {
+            background: #ff4d4d;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fab fa-whatsapp"></i> WhatsApp Order System</h1>
+            <p>Complete your purchase quickly and easily via WhatsApp</p>
+        </header>
+        
+        <div class="content">
+            <div class="cart-section">
+                <h2>Your Order</h2>
+                <div id="cartItems">
+                    <!-- Cart items will be dynamically inserted here -->
+                </div>
+                <div class="cart-total">
+                    Total: $<span id="cartTotal">0.00</span>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Customer Information</h2>
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Delivery Address</label>
+                        <textarea id="address" placeholder="Enter your complete delivery address" required></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn">
+                        <i class="fab fa-whatsapp whatsapp-icon"></i> Complete Order via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Order submitted successfully! Redirecting to WhatsApp...</span>
+    </div>
+
+    <script>
+        // Sample cart data (in a real application, this would come from your shopping cart)
+        const cart = [
+            { id: 1, title: "Wireless Headphones", price: 59.99, quantity: 1 },
+            { id: 2, title: "Smartphone Case", price: 19.99, quantity: 2 },
+            { id: 3, title: "USB-C Cable", price: 12.99, quantity: 1 }
+        ];
+
+        // DOM elements
+        const orderForm = document.getElementById('orderForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+
+        // Display cart items and calculate total
+        function renderCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <span class="item-name">${item.quantity} x ${item.title}</span>
+                    <span class="item-price">$${itemTotal.toFixed(2)}</span>
+                `;
+                
+                cartItems.appendChild(itemElement);
+            });
+            
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        // Show notification function
+        function showNotification(message, isError = false) {
+            notificationText.textContent = message;
+            notification.classList.remove('error');
+            
+            if (isError) {
+                notification.classList.add('error');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Update button state
+        function setButtonState(isLoading) {
+            if (isLoading) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<div class="loader"></div> Processing...';
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fab fa-whatsapp whatsapp-icon"></i> Complete Order via WhatsApp';
+            }
+        }
+
+        // Submit order via WhatsApp
+        async function submitOrder(event) {
+            event.preventDefault();
+            setButtonState(true);
+
+            // Collect customer details
+            let name = document.getElementById("fullName").value;
+            let phone = document.getElementById("phone").value;
+            let address = document.getElementById("address").value;
+
+            // Validate form
+            if (!name || !phone || !address) {
+                showNotification("Please fill in all fields before submitting your order.", true);
+                setButtonState(false);
+                return;
+            }
+
+            try {
+                // Fetch WhatsApp number from backend
+                const response = await fetch("http://127.0.0.1:5000/get_whatsapp");
+                
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                const whatsappNumber = data.whatsapp;
+
+                // Build cart details
+                let cartDetails = cart.map(item => 
+                    `- ${item.quantity} x ${item.title} ($${(item.price * item.quantity).toFixed(2)})`
+                ).join("%0A");
+
+                // Create message
+                let message = `Hello, my name is ${name}.%0AMy phone is ${phone}.%0AMy address is: ${address}.%0A%0AI want to order:%0A${cartDetails}%0A%0ATotal: $${document.getElementById('cartTotal').textContent}`;
+
+                // Show success notification
+                showNotification("Order submitted successfully! Redirecting to WhatsApp...");
+                
+                // Wait a moment before redirecting to show the notification
+                setTimeout(() => {
+                    // Redirect to WhatsApp with the number from backend
+                    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+                    setButtonState(false);
+                }, 1500);
+                
+            } catch (error) {
+                console.error("Error submitting order:", error);
+                showNotification(`Error: ${error.message}. Please check if the backend server is running.`, true);
+                setButtonState(false);
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+            orderForm.addEventListener('submit', submitOrder);
+        });
+    </script>
+</body>
+</html>
